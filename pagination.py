@@ -8,6 +8,9 @@ class Pagination():
     def get_offset(self):
         return self._per_page * (self._current - 1)
 
+    def get_limit(self):
+        return (self._per_page * self._current) - 1
+
     def _check_init_params(self, total, per_page, current):
         if total < 0 or per_page < 0 or current < 0:
             raise self.InitException("totalが適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
