@@ -22,5 +22,22 @@ class Pagination():
         if not (0 <= first_of_current_page < total):
             raise self.InitException("currentが適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
 
+    def get_pagination_links(self, num):
+        ret_data = []
+        for page_num in self.get_pagination_page_nums(num):
+            pass
+
+    def get_pagination_page_nums(self, num):
+        if num % 2 == 0:
+            start = self._current - ((num // 2) - 1)
+        else:
+            start = self._current - (num // 2)
+
+        if start < 0:
+            start = 1
+
+        return list(range(start, num+1))
+
     class InitException(Exception):
         pass
+
