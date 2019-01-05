@@ -36,7 +36,17 @@ class TestPagination(unittest.TestCase):
         p2 = Pagination(total=100, per_page=10, current=2)
         self.assertEqual(19, p2.get_limit())
 
+    def test_get_max_page_num(self):
+        p1 = Pagination(total=100, per_page=10, current=1)
+        self.assertEqual(10, p1.get_max_page_num())
+
+        p1 = Pagination(total=101, per_page=10, current=1)
+        self.assertEqual(11, p1.get_max_page_num())
+
     def test_get_pagination_page_nums(self):
+        p4 = Pagination(total=100, per_page=10, current=5)
+        self.assertEqual([3,4,5,6,7], p4.get_pagination_page_nums(5))
+
         p1 = Pagination(total=100, per_page=10, current=1)
         self.assertEqual([1,2,3,4,5], p1.get_pagination_page_nums(5))
 
@@ -46,15 +56,11 @@ class TestPagination(unittest.TestCase):
         p3 = Pagination(total=100, per_page=10, current=10)
         self.assertEqual([6,7,8,9,10], p3.get_pagination_page_nums(5))
 
-        p4 = Pagination(total=100, per_page=10, current=5)
-        self.assertEqual([3,4,5,6,7], p4.get_pagination_page_nums(5))
-
         p5 = Pagination(total=100, per_page=10, current=2)
         self.assertEqual([1,2,3,4,5], p5.get_pagination_page_nums(5))
 
         p6 = Pagination(total=100, per_page=10, current=9)
         self.assertEqual([6,7,8,9,10], p6.get_pagination_page_nums(5))
-
 
     def test_get_pagination_links(self):
         p = Pagination(total=100, per_page=10, current=5)

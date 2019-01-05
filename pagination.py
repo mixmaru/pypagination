@@ -25,7 +25,9 @@ class Pagination():
     def get_pagination_links(self, num):
         ret_data = []
         for page_num in self.get_pagination_page_nums(num):
-            pass
+            ret_data.append(self._create_pagination_data(page_num))
+
+        return ret_data
 
     def get_pagination_page_nums(self, num):
         if num % 2 == 0:
@@ -33,11 +35,38 @@ class Pagination():
         else:
             start = self._current - (num // 2)
 
-        if start < 0:
-            start = 1
+        end = start + num - 1
+        start, end = self._adjust_start_end(start, end)
 
-        return list(range(start, num+1))
+        return list(range(start, end + 1))
+
+    def _create_pagination_data(self, page_num):
+        return {
+            "page": page_num,
+            "is_current": page_num == self._current,
+        }
+
+    def _adjust_start_end(self, start, end):
+        ret_start = start
+        ret_end = end
+        if start < 1:
+            ret_start = 1
+            ret_end = end + abs(start - 1)
+        if end > self.get_max_page_num():
+            ret_end = self.get_max_page_num()
+            ret_start = ret_start - (end - self.get_max_page_num())
+            if ret_start < 1:
+                ret_start = 1
+
+        return ret_start, ret_end
+
+    def get_max_page_num(self):
+        if self._total % self._per_page == 0:
+            return self._total // self._per_page
+        else:
+            return self._total // self._per_page + 1
 
     class InitException(Exception):
         pass
+
 
