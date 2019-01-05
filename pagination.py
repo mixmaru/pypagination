@@ -5,12 +5,6 @@ class Pagination():
         self._per_page = per_page
         self._current = current
 
-    def get_offset(self):
-        return self._per_page * (self._current - 1)
-
-    def get_limit(self):
-        return (self._per_page * self._current) - 1
-
     def _check_init_params(self, total, per_page, current):
         if total < 0 or per_page < 0 or current < 0:
             raise self.InitException("totalが適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
@@ -21,6 +15,18 @@ class Pagination():
         first_of_current_page = (current - 1) * per_page
         if not (0 <= first_of_current_page < total):
             raise self.InitException("currentが適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
+
+    def get_offset(self):
+        return self._per_page * (self._current - 1)
+
+    def get_limit(self):
+        return (self._per_page * self._current) - 1
+
+    def get_max_page_num(self):
+        if self._total % self._per_page == 0:
+            return self._total // self._per_page
+        else:
+            return self._total // self._per_page + 1
 
     def get_pagination_links(self, num):
         ret_data = []
@@ -59,12 +65,6 @@ class Pagination():
                 ret_start = 1
 
         return ret_start, ret_end
-
-    def get_max_page_num(self):
-        if self._total % self._per_page == 0:
-            return self._total // self._per_page
-        else:
-            return self._total // self._per_page + 1
 
     class InitException(Exception):
         pass
