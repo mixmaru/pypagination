@@ -26,13 +26,6 @@ class TestPagination(unittest.TestCase):
         p2 = Pagination(total=100, per_page=10, current=2)
         self.assertEqual(10, p2.get_offset())
 
-    def test_get_limit(self):
-        p1 = Pagination(total=100, per_page=10, current=1)
-        self.assertEqual(9, p1.get_limit())
-
-        p2 = Pagination(total=100, per_page=10, current=2)
-        self.assertEqual(19, p2.get_limit())
-
     def test_get_max_page_num(self):
         p1 = Pagination(total=100, per_page=10, current=1)
         self.assertEqual(10, p1.get_max_page_num())

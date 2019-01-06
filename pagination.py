@@ -16,9 +16,6 @@ class Pagination():
     def get_offset(self):
         return self._per_page * (self._current - 1)
 
-    def get_limit(self):
-        return (self._per_page * self._current) - 1
-
     def get_max_page_num(self):
         if self._total % self._per_page == 0:
             return self._total // self._per_page
