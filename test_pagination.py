@@ -11,9 +11,6 @@ class TestPagination(unittest.TestCase):
             pagination = Pagination(total=-1, per_page=100, current=1)
 
         with self.assertRaises(Pagination.InitException):
-            pagination = Pagination(total=100, per_page=101, current=1)
-
-        with self.assertRaises(Pagination.InitException):
             pagination = Pagination(total=100, per_page=10, current=11)
 
         with self.assertRaises(Pagination.InitException):
