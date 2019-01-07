@@ -7,11 +7,11 @@ class Pagination():
 
     def _check_init_params(self, total, per_page, current):
         if total < 0 or per_page < 0 or current < 0:
-            raise self.InitException("totalが適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
+            raise self.InitArgValueException("引数が適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
 
         first_of_current_page = (current - 1) * per_page
         if not (0 <= first_of_current_page < total):
-            raise self.InitException("currentが適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
+            raise self.InitCurrentValueException("currentが適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
 
     def get_offset(self):
         return self._per_page * (self._current - 1)
@@ -60,7 +60,10 @@ class Pagination():
 
         return ret_start, ret_end
 
-    class InitException(Exception):
+    class InitArgValueException(Exception):
+        pass
+
+    class InitCurrentValueException(Exception):
         pass
 
 
