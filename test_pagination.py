@@ -7,16 +7,16 @@ class TestPagination(unittest.TestCase):
         pagination = Pagination(total=100, per_page=10, current=1)
         self.assertIsNotNone(pagination)
 
-        with self.assertRaises(Pagination.InitArgValueException):
+        with self.assertRaises(ValueError):
             pagination = Pagination(total=-1, per_page=100, current=1)
 
-        with self.assertRaises(Pagination.InitArgValueException):
+        with self.assertRaises(ValueError):
             pagination = Pagination(total=100, per_page=-1, current=1)
 
-        with self.assertRaises(Pagination.InitArgValueException):
+        with self.assertRaises(ValueError):
             pagination = Pagination(total=100, per_page=10, current=-1)
 
-        with self.assertRaises(Pagination.InitCurrentValueException):
+        with self.assertRaises(ValueError):
             pagination = Pagination(total=100, per_page=10, current=11)
 
     def test_get_offset(self):
