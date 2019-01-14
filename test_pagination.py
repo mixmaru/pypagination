@@ -52,6 +52,10 @@ class TestPagination(unittest.TestCase):
         p6 = Pagination(total=100, per_page=10, current=9)
         self.assertEqual([6,7,8,9,10], p6.get_pagination_page_nums(5))
 
+        # ページネーションが正しくでなかったバグ対応
+        p7 = Pagination(total=7, per_page=2, current=1)
+        self.assertEqual([1,2,3,4], p7.get_pagination_page_nums(5))
+
     def test_get_pagination_links(self):
         p = Pagination(total=100, per_page=10, current=5)
         expect = [
