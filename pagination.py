@@ -25,7 +25,7 @@ class Pagination():
     def get_pagination_links(self, num):
         ret_data = []
         for page_num in self.get_pagination_page_nums(num):
-            ret_data.append(self._create_pagination_data(page_num))
+            ret_data.append(self.__create_pagination_data(page_num))
 
         return ret_data
 
@@ -36,25 +36,29 @@ class Pagination():
             start = self.__current - (num // 2)
 
         end = start + num - 1
-        start, end = self._adjust_start_end(start, end)
+        start, end = self.__adjust_start_end(start, end)
 
         return list(range(start, end + 1))
 
-    def _create_pagination_data(self, page_num):
+    def __create_pagination_data(self, page_num):
         return {
             "page": page_num,
             "is_current": page_num == self.__current,
         }
 
-    def _adjust_start_end(self, start, end):
+    # startが0以下になっていたり、endが存在するページ数を超えた値になっていたらそれぞれ範囲内になるように調整する
+    def __adjust_start_end(self, start, end):
         ret_start = start
         ret_end = end
-        if start < 1:
+
+        if start <= 0:
+            # startが0以下なら1にして、その分endを正方向にズラす
             ret_start = 1
             ret_end = end + abs(start - 1)
-        if end > self.get_max_page_num():
+        if ret_end > self.get_max_page_num():
+            # endが最大ページ数より大きければ、endを最大ページ数にし、減らした分startを負方向にズラす
+            ret_start = ret_start - (ret_end - self.get_max_page_num())
             ret_end = self.get_max_page_num()
-            ret_start = ret_start - (end - self.get_max_page_num())
             if ret_start < 1:
                 ret_start = 1
 
