@@ -1,11 +1,11 @@
 class Pagination():
     def __init__(self, total, per_page, current):
-        self._check_init_params(total, per_page, current)
-        self._total = total
-        self._per_page = per_page
-        self._current = current
+        self.__check_init_params(total, per_page, current)
+        self.__total = total
+        self.__per_page = per_page
+        self.__current = current
 
-    def _check_init_params(self, total, per_page, current):
+    def __check_init_params(self, total, per_page, current):
         if total < 0 or per_page < 0 or current < 0:
             raise ValueError(1, "引数が適正ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
 
@@ -14,13 +14,13 @@ class Pagination():
             raise ValueError(2, "currentが適正な範囲ではありません。total:{0} per_page:{1} current:{2}".format(total, per_page, current))
 
     def get_offset(self):
-        return self._per_page * (self._current - 1)
+        return self.__per_page * (self.__current - 1)
 
     def get_max_page_num(self):
-        if self._total % self._per_page == 0:
-            return self._total // self._per_page
+        if self.__total % self.__per_page == 0:
+            return self.__total // self.__per_page
         else:
-            return self._total // self._per_page + 1
+            return self.__total // self.__per_page + 1
 
     def get_pagination_links(self, num):
         ret_data = []
@@ -31,9 +31,9 @@ class Pagination():
 
     def get_pagination_page_nums(self, num):
         if num % 2 == 0:
-            start = self._current - ((num // 2) - 1)
+            start = self.__current - ((num // 2) - 1)
         else:
-            start = self._current - (num // 2)
+            start = self.__current - (num // 2)
 
         end = start + num - 1
         start, end = self._adjust_start_end(start, end)
@@ -43,7 +43,7 @@ class Pagination():
     def _create_pagination_data(self, page_num):
         return {
             "page": page_num,
-            "is_current": page_num == self._current,
+            "is_current": page_num == self.__current,
         }
 
     def _adjust_start_end(self, start, end):
